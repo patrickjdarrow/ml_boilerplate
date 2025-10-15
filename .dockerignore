@@ -1,0 +1,17 @@
+# Docker ignore file for ML project
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+.tox/
+.coverage
+.pytest_cache/
+htmlcov/
+.DS_Store
+*.egg-info/
+dist/
+build/
+.git/

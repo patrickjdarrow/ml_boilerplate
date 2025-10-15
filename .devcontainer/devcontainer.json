@@ -1,0 +1,27 @@
+{
+	"name": "ML Development Environment",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"context": ".."
+	},
+	"workspaceFolder": "/workspace",
+	"mounts": [
+		"source=${localEnv:DATA_DIR:-${localEnv:HOME}/data},target=/data,type=bind",
+		"source=${localWorkspaceFolder},target=/workspace,type=bind"
+	],
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-python.python",
+				"ms-toolsai.jupyter",
+				"voxel51.fiftyone"
+			]
+		}
+	},
+	"forwardPorts": [5151],
+	"hostRequirements": {
+		"gpu": true
+	},
+	"postCreateCommand": "python -m ipykernel install --user --name=ml-env",
+	"remoteUser": "root"
+}

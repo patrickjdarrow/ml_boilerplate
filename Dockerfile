@@ -1,20 +1,29 @@
-FROM pytorch/pytorch:2.2.1-cuda11.8-cudnn8-devel as pjd_torch2.2.1-cuda11.8-cudnn8-devel
+FROM pytorch/pytorch:2.8.0-cuda12.6-cudnn9-devel
 
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     vim \
+    git \
     ffmpeg \
     libsm6 \
     libxext6 \
-    git
+    && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade pip && pip install \
-    jupyterlab \
+# Install Python packages for VS Code notebook support
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir \
+    ipykernel \
+    jupyter \
     matplotlib \
     pandas \
     opencv-python \
-    ffmpeg-python
+    ffmpeg-python \
+    ipywidgets \
+    nbconvert \
+    fiftyone
 
-COPY "jlab.sh" .
-RUN chmod +x jlab.sh
+# Set working directory
+WORKDIR /workspace
 
-ENTRYPOINT /bin/bash
+# Default command
+CMD ["/bin/bash"]
