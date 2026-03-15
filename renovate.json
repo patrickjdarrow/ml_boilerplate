@@ -1,0 +1,33 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "schedule": ["before 9am on Monday"],
+  "packageRules": [
+    {
+      "description": "Group all Python dependency updates into one PR",
+      "matchManagers": ["uv"],
+      "groupName": "Python dependencies",
+      "automerge": false
+    },
+    {
+      "description": "PyTorch base image — requires manual review (CUDA version changes can be breaking)",
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["pytorch/pytorch"],
+      "automerge": false,
+      "labels": ["dependencies", "docker"]
+    },
+    {
+      "description": "GitHub Actions — automerge minor/patch updates",
+      "matchManagers": ["github-actions"],
+      "automerge": true,
+      "automergeType": "pr",
+      "matchUpdateTypes": ["minor", "patch"]
+    }
+  ],
+  "uv": {
+    "enabled": true
+  },
+  "dockerfile": {
+    "enabled": true
+  }
+}

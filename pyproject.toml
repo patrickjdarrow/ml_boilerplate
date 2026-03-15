@@ -1,0 +1,41 @@
+[project]
+name = "ml-project"
+version = "0.1.0"
+requires-python = ">=3.11"
+
+# NOTE: PyTorch is NOT listed here — it comes from the base Docker image
+# (pytorch/pytorch:2.8.0-cuda12.6-cudnn9-devel) with the correct CUDA build.
+# Adding torch here would reinstall it without GPU support.
+dependencies = [
+    # Notebook / IDE support
+    "ipykernel>=6",
+    "jupyter>=1.1",
+    "ipywidgets>=8",
+    "nbconvert>=7",
+    # Data / visualization
+    "matplotlib>=3.9",
+    "pandas>=2.2",
+    # Computer vision
+    "opencv-python>=4.10",
+    "ffmpeg-python>=0.2",
+    "fiftyone>=1.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9",
+]
+
+[tool.uv]
+# Include dev group by default — this is always a dev environment
+default-groups = ["dev"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.format]
+quote-style = "double"

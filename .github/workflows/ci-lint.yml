@@ -1,0 +1,39 @@
+name: Lint
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+concurrency:
+  group: lint-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Ruff + lockfile check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: "latest"
+
+      - name: Check lockfile is up to date
+        # Exits non-zero if pyproject.toml and uv.lock are out of sync.
+        # Guards against "edited pyproject.toml, forgot to run uv lock".
+        run: uv lock --locked
+
+      - name: Install dev dependencies
+        # Only installs ruff — skips the full ML stack (fiftyone, OpenCV, etc.)
+        # Keeps this job under 60 seconds.
+        run: uv sync --frozen --only-dev
+
+      - name: Ruff lint
+        run: uv run ruff check .
+
+      - name: Ruff format check
+        run: uv run ruff format --check .

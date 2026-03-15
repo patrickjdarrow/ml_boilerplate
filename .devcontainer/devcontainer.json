@@ -9,19 +9,38 @@
 		"source=${localEnv:DATA_DIR:-${localEnv:HOME}/data},target=/data,type=bind",
 		"source=${localWorkspaceFolder},target=/workspace,type=bind"
 	],
+	// devcontainer features add tools at container-creation time without
+	// bloating the image layer. git and gh are updated independently of
+	// the Python environment rebuild cycle.
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {},
+		"ghcr.io/devcontainers/features/github-cli:1": {}
+	},
 	"customizations": {
 		"vscode": {
 			"extensions": [
 				"ms-python.python",
 				"ms-toolsai.jupyter",
-				"voxel51.fiftyone"
-			]
+				"voxel51.fiftyone",
+				"anthropics.claude-code",
+				"charliermarsh.ruff"
+			],
+			"settings": {
+				"python.defaultInterpreterPath": "/opt/venv/bin/python",
+				"[python]": {
+					"editor.defaultFormatter": "charliermarsh.ruff",
+					"editor.formatOnSave": true
+				}
+			}
 		}
 	},
 	"forwardPorts": [5151],
 	"hostRequirements": {
 		"gpu": true
 	},
-	"postCreateCommand": "python -m ipykernel install --user --name=ml-env",
+	// --sys-prefix installs the kernel into the venv so notebooks and the
+	// VS Code Python interpreter stay in sync.
+	"postCreateCommand": "python -m ipykernel install --sys-prefix --name=ml-env --display-name='ML Env'",
+	// Running as root is intentional — the pytorch/pytorch base image assumes root.
 	"remoteUser": "root"
 }
