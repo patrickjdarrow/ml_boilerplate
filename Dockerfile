@@ -1,4 +1,4 @@
-FROM pytorch/pytorch:2.8.0-cuda12.6-cudnn9-devel
+FROM pytorch/pytorch:2.10.0-cuda13.0-cudnn9-devel
 
 # System dependencies
 # Note: git and gh are installed via devcontainer features (see .devcontainer/devcontainer.json)
