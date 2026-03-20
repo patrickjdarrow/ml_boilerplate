@@ -6,7 +6,7 @@
 	},
 	"workspaceFolder": "/workspace",
 	"mounts": [
-		"source=${localEnv:DATA_DIR:-${localEnv:HOME}/data},target=/data,type=bind",
+		"source=${localEnv:HOME}/data,target=/data,type=bind",
 		"source=${localWorkspaceFolder},target=/workspace,type=bind"
 	],
 	// devcontainer features add tools at container-creation time without
